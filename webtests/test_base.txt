@@ -1,0 +1,11 @@
+*** Settings ***
+Documentation   andriod webdriver demo
+Suite Setup     启动测试
+Suite Teardown  结束测试
+Force Tags      regression
+Resource        douban_resource.txt
+ 
+*** Test Cases ***
+test_andirod_webdriver
+    [Tags]  
+    goto  ${HOST}

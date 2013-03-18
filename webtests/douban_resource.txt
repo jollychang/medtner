@@ -1,0 +1,14 @@
+*** Settings ***
+Library         Selenium2Library  
+ 
+*** Variables ***
+${BROWSER}  firefox
+${HOST}  http://www.douban.com
+ 
+*** Keywords ***
+启动测试
+    Open Browser  ${HOST}  ${BROWSER}  None  http://127.0.0.1:8080/wd/hub   
+    go to  ${HOST}
+ 
+结束测试
+    Close Browser
