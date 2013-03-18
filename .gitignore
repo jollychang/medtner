@@ -1,1 +1,4 @@
 *.pyc
+report.html
+output.xml
+log.html
