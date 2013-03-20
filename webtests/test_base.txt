@@ -1,11 +1,15 @@
 *** Settings ***
-Documentation   andriod webdriver demo
+Documentation   mobile webdriver demo
 Suite Setup     启动测试
 Suite Teardown  结束测试
 Force Tags      regression
 Resource        douban_resource.txt
  
 *** Test Cases ***
-test_mobile_webdriver
+test_mobile_webdriver_m_douban
     [Tags]  
-    goto  ${HOST}
+    goto  http://m.douban.com
+
+test_mobile_webdriver_taobao
+    [Tags]  
+    goto  http://www.taobao.com
