@@ -6,6 +6,6 @@ Force Tags      regression
 Resource        douban_resource.txt
  
 *** Test Cases ***
-test_andirod_webdriver
+test_mobile_webdriver
     [Tags]  
     goto  ${HOST}
