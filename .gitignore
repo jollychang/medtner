@@ -2,3 +2,4 @@
 report.html
 output.xml
 log.html
+instrumentscli*.trace/

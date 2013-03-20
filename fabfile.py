@@ -3,28 +3,48 @@
 selenium grid2 for testing android and iphone web app
 http://code.dapps.douban.com/medtner
 '''
-from fabric.api import local, task
+from fabric.api import local, task, cd
 
 @task
-def webtests():
-	'''run webtests'''
-	local("pybot ./webtests/test_base.txt")
+def webtests(platform='android'):
+    '''run webtests'''
+    local("pybot -v PLATFORM:%s ./webtests/test_base.txt" % platform)
 
 @task
 def start_android_service():
-	'''start android service'''
-	#local("wget http://selenium.googlecode.com/files/android-server-2.21.0.apk")
-	#local("adb -s emulator-5554 -e install -r android-server-2.21.0.apk ")
-	#local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity  -e debug true")
-	local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity")
-	local("adb forward tcp:8080 tcp:8080 &")
+    '''start android service'''
+    #local("wget http://selenium.googlecode.com/files/android-server-2.21.0.apk")
+    #local("adb -s emulator-5554 -e install -r android-server-2.21.0.apk ")
+    #local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity  -e debug true")
+    local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity")
+    local("adb forward tcp:8080 tcp:8080 &")
 
 @task
 def install_apk():
-	local("adb install -r ./libs/android-server-2.6.0.apk")
+    local("adb install -r ./libs/android-server-2.6.0.apk")
 
-@taks
+@task
 def create_android_emulator():
-	'''create android emulator'''
-	local("android create avd -n my_android -t 12 -c 100M")
-	local("emulator -avd my_android &")
+    '''create android emulator'''
+    local("echo no | android -s create avd --force --name my_android --target 1 --sdcard 100M")
+    local("emulator -avd my_android &")
+
+@task()
+def build_iphone_driver():
+    '''build iphone driver'''
+    with cd('/Users/jollychang/Work/selenium'):
+        local("/usr/bin/xcodebuild -project /Users/jollychang/Work/selenium/iphone/iWebDriver.xcodeproj clean build -sdk iphonesimulator6.0 -target iWebDriver -configuration Debug")
+
+@task(pty=False)
+def launch_ios_simulator():
+    '''launch ios simulator'''
+    local("sudo -ujollychang /usr/bin/instruments -t /Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.bundle/Contents/Resources/Automation.tracetemplate  /Users/jollychang/Work/selenium/iphone/build/Debug-iphonesimulator/iWebDriver.app > output 2> /dev/null < /dev/null &")
+
+@task
+def register_node(platform="android", hubhost="qa-shire-rc.intra.douban.com"):
+    '''register node to hub'''
+    if platform == "android":
+        cmd = "flynnid --nodeport=8080 --browsername=android --browserver=3.1 --platform=ANDROID  --hubhost=%s" % hubhost
+    elif platform == "iphone" or "ios":
+        cmd = "flynnid --nodeport=3001 --browsername=iphone --browserver=6.1 --platform=ANY  --hubhost=%s" % hubhost
+    local(cmd)
