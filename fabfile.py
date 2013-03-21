@@ -3,6 +3,7 @@
 selenium grid2 for testing android and iphone web app
 http://code.dapps.douban.com/medtner
 '''
+import os
 from fabric.api import local, task, cd
 
 @task
@@ -30,10 +31,12 @@ def create_android_emulator():
     local("emulator -avd my_android &")
 
 @task()
-def build_iphone_driver():
+def build_iphone_driver(selenium_path='/Users/jollychang/Work/selenium'):
     '''build iphone driver'''
-    with cd('/Users/jollychang/Work/selenium'):
-        local("/usr/bin/xcodebuild -project /Users/jollychang/Work/selenium/iphone/iWebDriver.xcodeproj clean build -sdk iphonesimulator6.0 -target iWebDriver -configuration Debug")
+    with cd(selenium_path):
+        sdk = local("xcodebuild -showsdks |grep iphonesimulator | awk '{print $6}'", capture=True)
+        project_path = os.path.join(selenium_path, 'iphone/iWebDriver.xcodeproj')
+        local("/usr/bin/xcodebuild -project %s clean build -sdk %s -target iWebDriver -configuration Debug" % (project_path, sdk))
 
 @task(pty=False)
 def launch_ios_simulator():
