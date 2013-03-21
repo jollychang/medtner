@@ -1,2 +1,13 @@
-fabric==1.6
-flynnid==0.3
+Fabric==1.6.0
+FlynnID==0.3
+colorama==0.2.5
+decorator==3.4.0
+distribute==0.6.34
+docutils==0.10
+paramiko==1.10.0
+pycrypto==2.6
+robotframework==2.7.7
+robotframework-selenium2library==1.1.0
+selenium==2.31.0
+termcolor==1.1.0
+wsgiref==0.1.2
