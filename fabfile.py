@@ -9,7 +9,10 @@ from fabric.api import local, task, cd
 @task
 def webtests(platform='android'):
     '''run webtests'''
-    local("pybot -v PLATFORM:%s ./webtests/test_base.txt" % platform)
+    if platform == ios:
+        local("pybot -v PLATFORM:%s -v IPHONE:http://iosci.intra.douban.com:3001/wd/hub ./webtests/test_base.txt" % platform)
+    else:
+        local("pybot -v PLATFORM:%s -v ANDROID:http://iosci.intra.douban.com:7001/wd/hub ./webtests/test_base.txt" % platform)
 
 @task
 def start_android_service():
@@ -18,7 +21,8 @@ def start_android_service():
     #local("adb -s emulator-5554 -e install -r android-server-2.21.0.apk ")
     #local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity  -e debug true")
     local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity")
-    local("adb forward tcp:8080 tcp:8080 &")
+    local("adb forward tcp:7000 tcp:8080 &")
+    local("socat TCP-LISTEN:7001,fork TCP:localhost:7000")
 
 @task
 def install_apk():
