@@ -43,16 +43,16 @@ def build_iphone_driver(selenium_path='/Users/jollychang/Work/selenium'):
         local("/usr/bin/xcodebuild -project %s clean build -sdk %s -target iWebDriver -configuration Debug" % (project_path, sdk))
 
 @task(pty=False)
-def launch_ios_simulator(sdkLevel=null,deviceType=null,videoPath=null):
-    '''launch ios simulator'''
-    options = "";
-    if sdkLevel != null:
-        options = options+"-s sdkLevel  "
-    if deviceType !=null:
-        options = options+"-f deviceType  "
-    if videoPath != null:
-        options  = options +"-v videoPath  "
-    local("./libs/waxsim"+ options +" ./libs/iWebDriver.app  ")
+def launch_ios_simulator(sdkLevel="", deviceType="", videoPath=""):
+    '''launch ios simulator, fab launch_ios_simulator:sdkLevel,deviceType,videoPath'''
+    options = " ";
+    if sdkLevel: 
+        options = options + " -s " + sdkLevel
+    if deviceType:
+        options = options + " -f " +  deviceType
+    if videoPath:
+        options  = options +" -v " + videoPath
+    local("./libs/waxsim"+ options +" ./libs/iWebDriver.app &  ")
 
 @task
 def register_node(platform="android", hubhost="qa-shire-rc.intra.douban.com"):
