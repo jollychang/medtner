@@ -5,6 +5,7 @@ http://code.dapps.douban.com/medtner
 '''
 import os,sys
 from fabric.api import local, task, cd
+from Dependency.EmulatorManager.sdkManage import getLastSDKLevel
 
 @task
 def webtests(platform='android'):
@@ -15,11 +16,10 @@ def webtests(platform='android'):
         local("pybot -v PLATFORM:%s -v ANDROID:http://iosci.intra.douban.com:7001/wd/hub ./webtests/test_base.txt" % platform)
 
 def get_path():
-    path = sys.path[0]
-    return path
+    return sys.path[0]
 
 def get_manager_path():
-    path = get_path() + '/emulatorManager/androidManage'
+    path = get_path() + '/Dependency/emulatorManager/androidManage'
     return path
 
 @task
@@ -46,11 +46,13 @@ def install_apk():
     local(command)
 
 @task
-def create_android_emulator():
-    '''create android emulator'''
+def create_android_emulator(level=None):
+    '''create and launch android emulator'''
     #local("echo no | android -s create avd --force --name my_android --target 1 --sdcard 100M")
     #local("emulator -avd my_android &")
-    command = get_manager_path()+' avdstart -l 17 &'
+    if level == None:
+    	level = getLastSDKLevel()['level']
+    command = get_manager_path()+' avdstart -l '+str(level)+' &'
     local(command)
 
 @task()
