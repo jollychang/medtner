@@ -3,7 +3,7 @@
 selenium grid2 for testing android and iphone web app
 http://code.dapps.douban.com/medtner
 '''
-import os
+import os,sys
 from fabric.api import local, task, cd
 
 @task
@@ -14,25 +14,44 @@ def webtests(platform='android'):
     else:
         local("pybot -v PLATFORM:%s -v ANDROID:http://iosci.intra.douban.com:7001/wd/hub ./webtests/test_base.txt" % platform)
 
+def get_path():
+    path = sys.path[0]
+    return path
+
+def get_manager_path():
+    path = get_path() + '/emulatorManager/androidManage'
+    return path
+
 @task
 def start_android_service():
     '''start android service'''
     #local("wget http://selenium.googlecode.com/files/android-server-2.21.0.apk")
     #local("adb -s emulator-5554 -e install -r android-server-2.21.0.apk ")
     #local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity  -e debug true")
+    '''
     local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity")
     local("adb forward tcp:7000 tcp:8080 &")
     local("socat TCP-LISTEN:7001,fork TCP:localhost:7000")
+    '''
+    command = get_manager_path()+' service '
+    local(command)
+
 
 @task
 def install_apk():
+    '''
     local("adb install -r ./libs/android-server-2.6.0.apk")
+    '''
+    command = get_manager_path()+' install '+get_path()+'/libs/android-server-2.6.0.apk'
+    local(command)
 
 @task
 def create_android_emulator():
     '''create android emulator'''
-    local("echo no | android -s create avd --force --name my_android --target 1 --sdcard 100M")
-    local("emulator -avd my_android &")
+    #local("echo no | android -s create avd --force --name my_android --target 1 --sdcard 100M")
+    #local("emulator -avd my_android &")
+    command = get_manager_path()+' avdstart -l 17 &'
+    local(command)
 
 @task()
 def build_iphone_driver(selenium_path='/Users/jollychang/Work/selenium'):
