@@ -8,10 +8,10 @@ from fabric.api import local, task, cd
 from EmulatorManager.sdkManage import getLastSDKLevel
 
 current_path = os.path.dirname(os.path.abspath(__file__))
-tool_path = current_path +'/EmulatorManager/androidManage'
+tool_path = os.path.join(current_path, "/EmulatorManager/androidManage")
 
 @task
-def webtests(platform='android'):
+def webtests(platform="android"):
     '''run webtests'''
     if platform == ios:
         local("pybot -v PLATFORM:%s -v IPHONE:http://iosci.intra.douban.com:3001/wd/hub ./webtests/test_base.txt" % platform)
@@ -28,14 +28,17 @@ def start_android_service():
     #local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity")
     #local("adb forward tcp:7000 tcp:8080 &")
     #local("socat TCP-LISTEN:7001,fork TCP:localhost:7000")
-
-    command = tool_path +' service '
+    command = "%s service " % (tool_path)
     local(command)
 
 @task
 def install_apk():
     #local("adb install -r ./libs/android-server-2.6.0.apk")
-    command = tool_path +' install '+ current_path +'/libs/android-server-2.6.0.apk'
+    dir_name = os.path.join(current_path, "/libs/") 
+    file_name = "android-server-2.6.0"
+    file_suffix = "apk"
+    android_server_apk_path = os.path.join(dir_name, file_name + "." + file_suffix)
+    command = "%s install %s" % (tool_path, android_server_apk_path)
     local(command)
 
 @task
@@ -45,7 +48,7 @@ def create_android_emulator(level=None):
     #local("emulator -avd my_android &")
     if level == None:
         level = getLastSDKLevel()['level']
-    command = tool_path +' avdstart -l '+ str(level) +' &'
+    command = "%s avdstart -l %s &" % (tool_path, str(level))
     local(command)
 
 @task()
