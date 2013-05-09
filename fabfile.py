@@ -3,7 +3,7 @@
 selenium grid2 for testing android and iphone web app
 http://code.dapps.douban.com/medtner
 '''
-import os,sys
+import os, sys
 from fabric.api import local, task, cd
 from EmulatorManager.sdkManage import getLastSDKLevel
 
@@ -46,7 +46,7 @@ def create_android_emulator(level=None):
     #local("echo no | android -s create avd --force --name my_android --target 1 --sdcard 100M")
     #local("emulator -avd my_android &")
     if level == None:
-    	level = getLastSDKLevel()['level']
+        level = getLastSDKLevel()['level']
     command = tool_path+' avdstart -l '+str(level)+' &'
     local(command)
 
