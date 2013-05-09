@@ -8,7 +8,7 @@ from fabric.api import local, task, cd
 from EmulatorManager.sdkManage import getLastSDKLevel
 
 current_path = sys.path[0]
-tool_path = current_path + '/Dependency/emulatorManager/androidManage'
+tool_path = current_path + '/emulatorManager/androidManage'
 
 @task
 def webtests(platform='android'):
