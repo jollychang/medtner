@@ -3,12 +3,12 @@
 selenium grid2 for testing android and iphone web app
 http://code.dapps.douban.com/medtner
 '''
-import os, sys
+import os
 from fabric.api import local, task, cd
 from EmulatorManager.sdkManage import getLastSDKLevel
 
-current_path = sys.path[0]
-tool_path = current_path + '/EmulatorManager/androidManage'
+current_path = os.path.dirname(os.path.abspath(__file__))
+tool_path = current_path +'/EmulatorManager/androidManage'
 
 @task
 def webtests(platform='android'):
