@@ -5,7 +5,7 @@ http://code.dapps.douban.com/medtner
 '''
 import os,sys
 from fabric.api import local, task, cd
-from Dependency.EmulatorManager.sdkManage import getLastSDKLevel
+from EmulatorManager.sdkManage import getLastSDKLevel
 
 current_path = sys.path[0]
 tool_path = current_path + '/Dependency/emulatorManager/androidManage'
