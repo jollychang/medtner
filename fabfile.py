@@ -24,20 +24,18 @@ def start_android_service():
     #local("wget http://selenium.googlecode.com/files/android-server-2.21.0.apk")
     #local("adb -s emulator-5554 -e install -r android-server-2.21.0.apk ")
     #local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity  -e debug true")
-    '''
-    local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity")
-    local("adb forward tcp:7000 tcp:8080 &")
-    local("socat TCP-LISTEN:7001,fork TCP:localhost:7000")
-    '''
-    command = tool_path+' service '
+    
+    #local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity")
+    #local("adb forward tcp:7000 tcp:8080 &")
+    #local("socat TCP-LISTEN:7001,fork TCP:localhost:7000")
+
+    command = tool_path +' service '
     local(command)
 
 @task
 def install_apk():
-    '''
-    local("adb install -r ./libs/android-server-2.6.0.apk")
-    '''
-    command = tool_path+' install '+current_path+'/libs/android-server-2.6.0.apk'
+    #local("adb install -r ./libs/android-server-2.6.0.apk")
+    command = tool_path +' install '+ current_path +'/libs/android-server-2.6.0.apk'
     local(command)
 
 @task
@@ -47,7 +45,7 @@ def create_android_emulator(level=None):
     #local("emulator -avd my_android &")
     if level == None:
         level = getLastSDKLevel()['level']
-    command = tool_path+' avdstart -l '+str(level)+' &'
+    command = tool_path +' avdstart -l '+ str(level) +' &'
     local(command)
 
 @task()
