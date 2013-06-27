@@ -8,47 +8,42 @@ from fabric.api import local, task, cd
 from EmulatorManager.sdkManage import getLastSDKLevel
 
 current_path = os.path.dirname(os.path.abspath(__file__))
-tool_path = os.path.join(current_path, "/EmulatorManager/androidManage")
+android_manage = os.path.join(current_path, "/EmulatorManager/androidManage")
+selenium_hub_host = "qa-shire-rc.intra.douban.com"
+ios_webdriver_hub = "http://iosci.intra.douban.com:3001/wd/hub"
+android_webdriver_hub = "http://iosci.intra.douban.com:7001/wd/hub"
+ios_webdriver_node_port = '3001'
+android_webdriver_node_port = '8080'
 
 @task
 def webtests(platform="android"):
     '''run webtests'''
     if platform == ios:
-        local("pybot -v PLATFORM:%s -v IPHONE:http://iosci.intra.douban.com:3001/wd/hub ./webtests/test_base.txt" % platform)
+        local("pybot -v PLATFORM:%s -v IPHONE:%s ./webtests/test_base.txt" % (ios_webdriver_hub, platform))
     else:
-        local("pybot -v PLATFORM:%s -v ANDROID:http://iosci.intra.douban.com:7001/wd/hub ./webtests/test_base.txt" % platform)
+        local("pybot -v PLATFORM:%s -v ANDROID:%s ./webtests/test_base.txt" % (android_webdriver_hub, platform))
         
 @task
 def start_android_service():
     '''start android service'''
-    #local("wget http://selenium.googlecode.com/files/android-server-2.21.0.apk")
-    #local("adb -s emulator-5554 -e install -r android-server-2.21.0.apk ")
-    #local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity  -e debug true")
-    
-    #local("adb shell am start -a android.intent.action.MAIN -n org.openqa.selenium.android.app/.MainActivity")
-    #local("adb forward tcp:7000 tcp:8080 &")
-    #local("socat TCP-LISTEN:7001,fork TCP:localhost:7000")
-    command = "%s service " % (tool_path)
+    command = "%s service " % (android_manage)
     local(command)
 
 @task
 def install_apk():
-    #local("adb install -r ./libs/android-server-2.6.0.apk")
     dir_name = os.path.join(current_path, "/libs/") 
     file_name = "android-server-2.6.0"
     file_suffix = "apk"
     android_server_apk_path = os.path.join(dir_name, file_name + "." + file_suffix)
-    command = "%s install %s" % (tool_path, android_server_apk_path)
+    command = "%s install %s" % (android_manage, android_server_apk_path)
     local(command)
 
 @task
 def create_android_emulator(level=None):
     '''create and launch android emulator'''
-    #local("echo no | android -s create avd --force --name my_android --target 1 --sdcard 100M")
-    #local("emulator -avd my_android &")
     if level == None:
         level = getLastSDKLevel()['level']
-    command = "%s avdstart -l %s &" % (tool_path, str(level))
+    command = "%s avdstart -l %s &" % (android_manage, str(level))
     local(command)
 
 @task()
@@ -72,10 +67,10 @@ def launch_ios_simulator(sdkLevel="", deviceType="", videoPath=""):
     local("./libs/waxsim"+ options +" ./libs/iWebDriver.app &  ")
 
 @task
-def register_node(platform="android", hubhost="qa-shire-rc.intra.douban.com"):
+def register_node(platform="android", hubhost=selenium_hub_host, webdriver_node_port=android_webdriver_node_port):
     '''register node to hub'''
     if platform == "android":
-        cmd = "flynnid --nodeport=8080 --browsername=android --browserver=3.1 --platform=ANDROID  --hubhost=%s" % hubhost
+        cmd = "flynnid --nodeport=%s --browsername=android --browserver=3.1 --platform=ANDROID  --hubhost=%s" % (webdriver_node_port, hubhost))
     elif platform == "iphone" or "ios":
-        cmd = "flynnid --nodeport=3001 --browsername=iphone --browserver=6.1 --platform=ANY  --hubhost=%s" % hubhost
+        cmd = "flynnid --nodeport=%s --browsername=iphone --browserver=6.1 --platform=ANY  --hubhost=%s" % (webdriver_node_port, hubhost))
     local(cmd)
