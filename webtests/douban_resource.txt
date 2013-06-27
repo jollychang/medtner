@@ -11,9 +11,8 @@ ${REMOTE_URL}  http://iosci.intra.douban.com:4444/wd/hub  
  
 *** Keywords ***
 启动测试
-    #${REMOTE_URL}=  Set Variable If  '${PLATFORM}' == 'ios'  ${IPHONE}  ${ANDROID}
-#    Open Browser  ${HOST}  ${BROWSER}  None  ${REMOTE_URL}  platform:ANY,browserName:iphone
-    Open Browser  ${HOST}  ${BROWSER}  None  ${REMOTE_URL}  
+    ${REMOTE_URL}=  Set Variable If  '${PLATFORM}' == 'ios'  ${IPHONE}  ${ANDROID}
+    Open Browser  ${HOST}  ${BROWSER}  None  ${REMOTE_URL}  platform:ANY,browserName:iphone
     go to  ${HOST}
  
 结束测试
