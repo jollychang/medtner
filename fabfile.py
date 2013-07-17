@@ -70,7 +70,7 @@ def launch_ios_simulator(sdkLevel="", deviceType="", videoPath=""):
 def register_node(platform="android", hubhost=selenium_hub_host, webdriver_node_port=android_webdriver_node_port):
     '''register node to hub'''
     if platform == "android":
-        cmd = "flynnid --nodeport=%s --browsername=android --browserver=3.1 --platform=ANDROID  --hubhost=%s" % (webdriver_node_port, hubhost))
+        cmd = "flynnid --nodeport=%s --browsername=android --browserver=3.1 --platform=ANDROID  --hubhost=%s" % (webdriver_node_port, hubhost)
     elif platform == "iphone" or "ios":
-        cmd = "flynnid --nodeport=%s --browsername=iphone --browserver=6.1 --platform=ANY  --hubhost=%s" % (webdriver_node_port, hubhost))
+        cmd = "flynnid --nodeport=%s --browsername=iphone --browserver=6.1 --platform=ANY  --hubhost=%s" % (webdriver_node_port, hubhost)
     local(cmd)
