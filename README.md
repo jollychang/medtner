@@ -1,7 +1,7 @@
 #medtner
 
 Test 3G web app by android and iOS simulator.
-
+##Install
 ```sh
 git clone http://code.dapps.douban.com/medtner.git
 cd medtner
@@ -12,6 +12,7 @@ source ENV/bin/activate
 pip install -r pip-req.txt
 ```
 
+##Usage
 `fab -l`
 
 ```
