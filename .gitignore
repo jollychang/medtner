@@ -3,3 +3,6 @@ report.html
 output.xml
 log.html
 instrumentscli*.trace/
+.fab_tasks~
+ENV/
+build/

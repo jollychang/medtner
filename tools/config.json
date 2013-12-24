@@ -1,0 +1,26 @@
+{
+    "hub": {
+        "host": "iosci",
+        "port": 4444
+    },
+    "nodes": [
+{
+  "capabilities":
+      [
+        {
+          "browserName": "android",
+          "platform": "ANDROID",
+          "seleniumProtocol": "WebDriver",
+          "maxInstances": 1,
+          "port": 8081
+        }
+      ],
+  "configuration":
+  {
+    "maxSession": 6,
+    "port": 5555,
+    "register": true,
+    "registerCycle": 5000
+  }
+},]
+}
