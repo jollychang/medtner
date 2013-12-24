@@ -9,19 +9,20 @@ from EmulatorManager.sdkManage import getLastSDKLevel
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 android_manage = os.path.join(current_path, "/EmulatorManager/androidManage")
-selenium_hub_host = "qa-shire-rc.intra.douban.com"
-ios_webdriver_hub = "http://iosci.intra.douban.com:3001/wd/hub"
-android_webdriver_hub = "http://iosci.intra.douban.com:7001/wd/hub"
-ios_webdriver_node_port = '3001'
-android_webdriver_node_port = '8080'
+SELENIUM_HUB_HOST = "qa-shire-rc.intra.douban.com"
+IOS_WEBDRIVER_HUB = "http://localhost:3001/wd/hub"
+ANDROID_WEBDRIVER_HUB = "http://localhost:8080/wd/hub"
+IOS_WEBDRIVER_NODE_PORT = "3001"
+ANDROID_WEBDRIVER_NODE_PORT = "8080"
+
 
 @task
 def webtests(platform="android"):
     '''run webtests'''
-    if platform == ios:
-        local("pybot -v PLATFORM:%s -v IPHONE:%s ./webtests/test_base.txt" % (ios_webdriver_hub, platform))
+    if platform == 'ios':
+        local("pybot -v PLATFORM:%s -v IPHONE:%s ./webtests/test_base.txt" % (platform, IOS_WEBDRIVER_HUB))
     else:
-        local("pybot -v PLATFORM:%s -v ANDROID:%s ./webtests/test_base.txt" % (android_webdriver_hub, platform))
+        local("pybot -v PLATFORM:%s -v ANDROID:%s ./webtests/test_base.txt" % (platform, ANDROID_WEBDRIVER_HUB))
         
 @task
 def start_android_service():
@@ -67,7 +68,7 @@ def launch_ios_simulator(sdkLevel="", deviceType="", videoPath=""):
     local("./libs/waxsim"+ options +" ./libs/iWebDriver.app &  ")
 
 @task
-def register_node(platform="android", hubhost=selenium_hub_host, webdriver_node_port=android_webdriver_node_port):
+def register_node(platform="android", hubhost=SELENIUM_HUB_HOST, webdriver_node_port=ANDROID_WEBDRIVER_NODE_PORT):
     '''register node to hub'''
     if platform == "android":
         cmd = "flynnid --nodeport=%s --browsername=android --browserver=3.1 --platform=ANDROID  --hubhost=%s" % (webdriver_node_port, hubhost)
