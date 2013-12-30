@@ -1,6 +1,7 @@
 #medtner
 
 Test 3G web app by android and iOS simulator.
+[Android and iOS Support](http://seleniumhq.wordpress.com/2013/12/24/android-and-ios-support)
 ##Install
 ```sh
 git clone http://code.dapps.douban.com/medtner.git
