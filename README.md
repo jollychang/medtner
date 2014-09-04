@@ -1,21 +1,25 @@
 #medtner
 
-Test 3G web app by android and iOS simulator.
-[Android and iOS Support](http://seleniumhq.wordpress.com/2013/12/24/android-and-ios-support)
+Use [selenium Grid2](https://code.google.com/p/selenium/wiki/Grid2) for testing web app by android and iOS simulator.    
+
+
+##Dependence
+* [socat](http://www.dest-unreach.org/socat/)
+
 ##Install
-```sh
-git clone https://github.com/jollychang/medtner.git
-cd medtner
-virtualenv ENV
-source ENV/bin/activate
-pip install -r pip-req.txt
-```
+
+>git clone https://github.com/jollychang/medtner.git    
+cd medtner    
+virtualenv ENV    
+source ENV/bin/activate    
+pip install -r pip-req.txt    
+
 
 ##Usage
 `fab -l`
 
 ```
-selenium grid2 for testing android and iphone web app
+Use selenium Grid2 for testing web app by android and iOS simulator.
 https://github.com/jollychang/medtner
 
 Available commands:
@@ -28,3 +32,6 @@ Available commands:
     start_android_service    start android service
     webtests                 run webtests
 ```
+
+
+[Android and iOS Support](http://seleniumhq.wordpress.com/2013/12/24/android-and-ios-support)
