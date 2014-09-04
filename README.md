@@ -4,10 +4,8 @@ Test 3G web app by android and iOS simulator.
 [Android and iOS Support](http://seleniumhq.wordpress.com/2013/12/24/android-and-ios-support)
 ##Install
 ```sh
-git clone http://code.dapps.douban.com/medtner.git
+git clone https://github.com/jollychang/medtner.git
 cd medtner
-git submodule init
-git submodule update
 virtualenv ENV
 source ENV/bin/activate
 pip install -r pip-req.txt
@@ -18,7 +16,7 @@ pip install -r pip-req.txt
 
 ```
 selenium grid2 for testing android and iphone web app
-http://code.dapps.douban.com/medtner
+https://github.com/jollychang/medtner
 
 Available commands:
 

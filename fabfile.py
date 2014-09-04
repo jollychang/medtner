@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
 selenium grid2 for testing android and iphone web app
-http://code.dapps.douban.com/medtner
+https://github.com/jollychang/medtner
 '''
 import os
 from fabric.api import local, task, cd
@@ -16,6 +16,20 @@ IOS_WEBDRIVER_NODE_PORT = "3001"
 ANDROID_WEBDRIVER_NODE_PORT = "8080"
 
 
+
+def _get_env_by_name(env_name):
+    try:
+        env_value = os.environ[env_name]
+    except Exception, e:
+        print 'make sure $ANDROID_HOME is in profile file'
+        raise e
+    return env_value
+
+def _adb_path():
+    adb_home_path = _get_env_by_name('ANDROID_HOME')
+    adb_bin_path = os.path.join(adb_home_path, 'platform-tools/adb')
+    return adb_bin_path
+
 @task
 def webtests(platform="android"):
     '''run webtests'''
@@ -27,8 +41,15 @@ def webtests(platform="android"):
 @task
 def start_android_service():
     '''start android service'''
-    command = "%s service " % (android_manage)
-    local(command)
+    print 'Start intent...'
+    start_command = _adb_path() +' shell am start -a android.intent.action.MAIN -n '+ 'org.openqa.selenium.android.app/.MainActivity' 
+    local(start_command, True)
+    print 'Forward tcp:7000 tcp:8080...'
+    tcp_command = _adb_path() +' forward tcp:7000 tcp:8080'
+    local(tcp_command)
+    print 'Socat TCP-LISTEN:7001,fork TCP:localhost:7000...'
+    socat_command = 'socat TCP-LISTEN:7001,fork TCP:localhost:7000'
+    local(socat_command)
 
 @task
 def install_apk():
