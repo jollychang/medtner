@@ -1,12 +1,12 @@
-#medtner
+# medtner
 
 Use [selenium Grid2](https://code.google.com/p/selenium/wiki/Grid2) for testing web app by android and iOS simulator.    
 
 
-##Dependence
+## Dependence
 * [socat](http://www.dest-unreach.org/socat/)
 
-##Install
+##I nstall
 
 >git clone https://github.com/jollychang/medtner.git    
 cd medtner    
@@ -15,7 +15,7 @@ source ENV/bin/activate
 pip install -r pip-req.txt    
 
 
-##Usage
+## Usage
 `fab -l`
 
 ```
